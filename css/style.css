@@ -778,6 +778,17 @@ h1, h2, h3, h4 { font-family: var(--font-display); color: var(--text-dark); line
   color: rgba(255,255,255,0.45);
 }
 .footer__bottom p { max-width: 640px; margin: 0 auto; }
+.footer__bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 1180px;
+}
+.footer__bottom-inner p { max-width: none; margin: 0; }
+.footer__credit a { color: rgba(255,255,255,0.65); font-weight: 600; transition: color 0.2s ease; }
+.footer__credit a:hover { color: var(--accent); }
 
 /* ==========================================================================
    WHATSAPP FLOAT
