@@ -556,7 +556,13 @@ h1, h2, h3, h4 { font-family: var(--font-display); color: var(--text-dark); line
 }
 .reel-card__play:hover { background: var(--accent); color: var(--accent-ink); transform: translate(-50%, -50%) scale(1.08); }
 .reel-card.is-playing .reel-card__play { opacity: 0; pointer-events: none; }
-.reel-card:hover .reel-card__play { opacity: 1; pointer-events: auto; }
+
+/* Revelar o botão ao passar o mouse só em dispositivos com hover de verdade
+   (mouse). Em touch (celular), ":hover" fica "grudado" após o toque e
+   sobrepunha a regra acima, deixando o ícone de play/pause preso na tela. */
+@media (hover: hover) and (pointer: fine) {
+  .reel-card:hover .reel-card__play { opacity: 1; pointer-events: auto; }
+}
 
 .reel-card__info {
   position: absolute;
