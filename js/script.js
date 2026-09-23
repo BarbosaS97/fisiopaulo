@@ -5,23 +5,37 @@ document.addEventListener('DOMContentLoaded', () => {
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   // ---------------------------------------------------------------------
-  // Vídeo de fundo do hero: roda automaticamente em qualquer tela (celular
-  // inclusive). No mobile é servida uma versão bem mais leve do vídeo
-  // (arquivo menor, resolução e fps reduzidos) via <source media="...">.
-  // Só fica só na imagem (poster) em conexões realmente muito limitadas
-  // (modo economia de dados / 2G).
+  // Vídeo de fundo do hero: usa autoplay nativo do HTML (o jeito mais
+  // confiável de tocar vídeo mudo automaticamente em celular). O navegador
+  // escolhe sozinho a fonte certa via <source media="..."> (versão leve
+  // no mobile, versão maior no desktop).
+  //
+  // Em conexões realmente limitadas (economia de dados / 2G) o vídeo é
+  // removido, deixando só a imagem (poster).
+  //
+  // Como reforço: se por algum motivo o autoplay nativo não disparar em
+  // algum navegador mais restritivo, tentamos de novo assim que a página
+  // carrega e também no primeiro toque/clique do usuário (gesto real do
+  // usuário sempre libera o play em qualquer navegador).
   // ---------------------------------------------------------------------
   const heroVideo = document.getElementById('heroVideo');
   if (heroVideo) {
     const conn = navigator.connection || navigator.webkitConnection || navigator.mozConnection;
     const isSlowConnection = !!(conn && (conn.saveData || /2g/.test(conn.effectiveType || '')));
 
-    if (!isSlowConnection) {
-      heroVideo.querySelectorAll('source[data-src]').forEach(source => {
-        source.src = source.dataset.src;
-      });
+    if (isSlowConnection) {
+      heroVideo.removeAttribute('autoplay');
+      heroVideo.pause();
+      heroVideo.querySelectorAll('source').forEach(source => source.remove());
       heroVideo.load();
-      heroVideo.play().catch(() => {});
+    } else {
+      const tryPlay = () => heroVideo.play().catch(() => {});
+      tryPlay();
+      heroVideo.addEventListener('loadeddata', tryPlay, { once: true });
+
+      ['touchstart', 'click'].forEach(evt => {
+        document.addEventListener(evt, tryPlay, { once: true, passive: true });
+      });
     }
   }
 
