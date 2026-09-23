@@ -5,23 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   // ---------------------------------------------------------------------
-  // Vídeo de fundo do hero: só carrega em telas maiores e conexão boa.
-  // No celular (ou com dados/conexão limitados) fica só a imagem (poster),
-  // evitando travamentos e economizando dados.
+  // Vídeo de fundo do hero: roda automaticamente em qualquer tela (celular
+  // inclusive). No mobile é servida uma versão bem mais leve do vídeo
+  // (arquivo menor, resolução e fps reduzidos) via <source media="...">.
+  // Só fica só na imagem (poster) em conexões realmente muito limitadas
+  // (modo economia de dados / 2G).
   // ---------------------------------------------------------------------
   const heroVideo = document.getElementById('heroVideo');
   if (heroVideo) {
     const conn = navigator.connection || navigator.webkitConnection || navigator.mozConnection;
     const isSlowConnection = !!(conn && (conn.saveData || /2g/.test(conn.effectiveType || '')));
-    const isSmallScreen = window.innerWidth < 768;
 
-    if (!isSlowConnection && !isSmallScreen) {
-      const source = heroVideo.querySelector('source[data-src]');
-      if (source) {
+    if (!isSlowConnection) {
+      heroVideo.querySelectorAll('source[data-src]').forEach(source => {
         source.src = source.dataset.src;
-        heroVideo.load();
-        heroVideo.play().catch(() => {});
-      }
+      });
+      heroVideo.load();
+      heroVideo.play().catch(() => {});
     }
   }
 
