@@ -312,16 +312,18 @@ h1, h2, h3, h4 { font-family: var(--font-display); color: var(--text-dark); line
 .hero__author {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 28px;
+  gap: 22px;
+  margin-bottom: 30px;
 }
 .hero__author-photo {
-  width: 156px; height: 156px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--accent);
-  box-shadow: 0 0 0 6px rgba(143,224,112,0.14), var(--shadow-lg);
+  width: 260px; height: 325px;
   flex-shrink: 0;
+  overflow: visible;
+  filter: drop-shadow(0 18px 32px rgba(0,0,0,0.5)) drop-shadow(0 0 30px rgba(143,224,112,0.22));
+}
+.hero__author-photo-outline {
+  stroke: var(--accent);
+  stroke-width: 3.5;
 }
 .hero__kicker {
   display: inline-block;
@@ -859,7 +861,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); color: var(--text-dark); line
   .section { padding: 80px 0; }
   .hero { min-height: 92vh; }
   .hero__author { gap: 14px; margin-bottom: 22px; }
-  .hero__author-photo { width: 96px; height: 96px; border-width: 2px; }
+  .hero__author-photo { width: 150px; height: 188px; }
   .hero__kicker { font-size: 1rem; }
   .hero__kicker small { font-size: 0.76rem; margin-top: 5px; }
   .hero__title { font-size: clamp(2.4rem, 12vw, 3.4rem); }

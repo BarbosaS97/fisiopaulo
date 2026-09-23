@@ -4,6 +4,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  // ---------------------------------------------------------------------
+  // Vídeo de fundo do hero: só carrega em telas maiores e conexão boa.
+  // No celular (ou com dados/conexão limitados) fica só a imagem (poster),
+  // evitando travamentos e economizando dados.
+  // ---------------------------------------------------------------------
+  const heroVideo = document.getElementById('heroVideo');
+  if (heroVideo) {
+    const conn = navigator.connection || navigator.webkitConnection || navigator.mozConnection;
+    const isSlowConnection = !!(conn && (conn.saveData || /2g/.test(conn.effectiveType || '')));
+    const isSmallScreen = window.innerWidth < 768;
+
+    if (!isSlowConnection && !isSmallScreen) {
+      const source = heroVideo.querySelector('source[data-src]');
+      if (source) {
+        source.src = source.dataset.src;
+        heroVideo.load();
+        heroVideo.play().catch(() => {});
+      }
+    }
+  }
+
   // Menu mobile
   const navToggle = document.getElementById('navToggle');
   const nav = document.getElementById('nav');
